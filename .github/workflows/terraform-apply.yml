@@ -29,26 +29,3 @@ jobs:
 
       - name: Terraform apply
         run: terraform apply -auto-approve
-
-      - name: Get sandbox-new IP
-        id: get_ip
-        run: |
-          for i in {1..12}; do
-            IP=$(virsh domifaddr sandbox-new 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d/ -f1)
-            if [ -n "$IP" ]; then
-              echo "ip=$IP" >> "$GITHUB_OUTPUT"
-              echo "sandbox-new IP: $IP"
-              exit 0
-            fi
-            echo "Waiting for IP... attempt $i"
-            sleep 10
-          done
-          echo "Could not get IP for sandbox-new"
-          exit 1
-
-      - name: Show IP in summary
-        run: |
-          echo "### sandbox-new IP" >> "$GITHUB_STEP_SUMMARY"
-          echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "${{ steps.get_ip.outputs.ip }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
