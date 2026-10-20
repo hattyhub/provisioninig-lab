@@ -39,7 +39,7 @@ resource "libvirt_cloudinit_disk" "sandbox_new_seed" {
 
 # The actual VM
 resource "libvirt_domain" "sandbox_new" {
-  name   = "sandbox-new"
+  name   = "sandbox-new2"
   memory = 2048
   vcpu   = 2
 
